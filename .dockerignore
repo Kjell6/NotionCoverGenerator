@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+
+# Node
+node_modules
+.npmrc
+npm-debug.log
+
+# Next.js
+.next
+dist
+build
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Sonstiges
+README.md
+
