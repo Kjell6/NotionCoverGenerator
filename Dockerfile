@@ -30,6 +30,10 @@ ENV NODE_ENV=production
 # Deaktiviert die Telemetrie von Next.js
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Einen nicht-privilegierten Benutzer und eine Gruppe erstellen
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
 # Notwendige Dateien aus der Build-Umgebung kopieren
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
