@@ -101,17 +101,6 @@ export default function MinimalNotionTitleGenerator() {
     }
   }
 
-  const handleDownload = () => {
-    if (generatedImage) {
-      const link = document.createElement("a")
-      link.href = generatedImage
-      link.download = "notion-titelbild.png"
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-2">
       <div className="bg-white rounded-lg p-4 max-w-xs w-full">
@@ -136,15 +125,9 @@ export default function MinimalNotionTitleGenerator() {
 
         {generatedImage && (
           <div className="mt-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 mb-4">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-2">
               <img src={generatedImage || "/placeholder.svg"} alt="Generated Title" className="w-full rounded-md" />
             </div>
-            <button
-              onClick={handleDownload}
-              className="w-full bg-[#2e2f31] text-white py-3 rounded-lg hover:bg-black transition duration-200 font-semibold text-md"
-            >
-              Download
-            </button>
           </div>
         )}
       </div>
