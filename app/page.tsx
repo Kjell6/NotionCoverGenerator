@@ -265,9 +265,9 @@ export default function NotionTitleGenerator() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[var(--dark-bg)] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[var(--dark-bg)] border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-8 max-w-md w-full">
-        <h1 className="text-4xl font-bold mb-6 text-[#2e2f31] dark:text-[var(--dark-text)] text-center">Notion Galerie-Bild Generator</h1>
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8 max-w-md w-full">
+        <h1 className="text-4xl font-bold mb-6 text-[#2e2f31] text-center">Notion Galerie-Bild Generator</h1>
 
         <div className="mb-6">
           <input
@@ -275,7 +275,7 @@ export default function NotionTitleGenerator() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Geben Sie Ihren Titel ein"
-            className="w-full p-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] dark:focus:ring-[var(--dark-button)] focus:border-[#2e2f31] dark:focus:border-[var(--dark-button)] text-[#2e2f31] dark:text-[var(--dark-text)] placeholder-gray-500 dark:placeholder-gray-400"
+            className="w-full p-4 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] focus:border-[#2e2f31] text-[#2e2f31] placeholder-gray-500"
             onKeyPress={(e) => e.key === "Enter" && handleGenerate()}
           />
         </div>
@@ -286,9 +286,9 @@ export default function NotionTitleGenerator() {
               type="checkbox"
               checked={includeImage}
               onChange={(e) => setIncludeImage(e.target.checked)}
-              className="w-5 h-5 text-[#2e2f31] dark:text-[var(--dark-button)] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-[#2e2f31] dark:focus:ring-[var(--dark-button)] focus:ring-2"
+              className="w-5 h-5 text-[#2e2f31] bg-white border-gray-300 rounded focus:ring-[#2e2f31] focus:ring-2"
             />
-            <span className="text-[#2e2f31] dark:text-[var(--dark-text)] font-medium">Bild hinzufügen</span>
+            <span className="text-[#2e2f31] font-medium">Bild hinzufügen</span>
           </label>
 
           {includeImage && (
@@ -297,10 +297,10 @@ export default function NotionTitleGenerator() {
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="w-full p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] dark:focus:ring-[var(--dark-button)] text-[#2e2f31] dark:text-[var(--dark-text)] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#2e2f31] dark:file:bg-[var(--dark-button)] file:text-white hover:file:bg-black dark:hover:file:bg-gray-600"
+                className="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] text-[#2e2f31] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#2e2f31] file:text-white hover:file:bg-black"
               />
               {uploadedImage && (
-                <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-3">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
                   <img
                     src={uploadedImage || "/placeholder.svg"}
                     alt="Uploaded preview"
@@ -315,19 +315,19 @@ export default function NotionTitleGenerator() {
         <button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="w-full bg-[#2e2f31] dark:bg-[var(--dark-button)] text-white py-4 rounded-lg hover:bg-black dark:hover:bg-gray-600 transition duration-200 mb-4 font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#2e2f31] text-white py-4 rounded-lg hover:bg-black transition duration-200 mb-4 font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isGenerating ? "Generiere..." : "Titelbild generieren"}
         </button>
 
         {generatedImage && (
           <div className="mt-8">
-            <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
               <img src={generatedImage || "/placeholder.svg"} alt="Generated Title" className="w-full rounded-md" />
             </div>
             <button
               onClick={handleDownload}
-              className="w-full bg-[#2e2f31] dark:bg-[var(--dark-button)] text-white py-4 rounded-lg hover:bg-black dark:hover:bg-gray-600 transition duration-200 font-semibold text-lg"
+              className="w-full bg-[#2e2f31] text-white py-4 rounded-lg hover:bg-black transition duration-200 font-semibold text-lg"
             >
               Titelbild herunterladen
             </button>
