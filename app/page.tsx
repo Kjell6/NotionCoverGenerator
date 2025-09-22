@@ -10,13 +10,21 @@ export default function NotionTitleGenerator() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [includeImage, setIncludeImage] = useState(false)
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+  const [uploadedImageDimensions, setUploadedImageDimensions] = useState<{ width: number; height: number } | null>(null)
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
       const reader = new FileReader()
       reader.onload = (e) => {
-        setUploadedImage(e.target?.result as string)
+        const imageUrl = e.target?.result as string
+        setUploadedImage(imageUrl)
+
+        const img = new Image()
+        img.onload = () => {
+          setUploadedImageDimensions({ width: img.width, height: img.height })
+        }
+        img.src = imageUrl
       }
       reader.readAsDataURL(file)
     }
@@ -31,25 +39,21 @@ export default function NotionTitleGenerator() {
     canvas.height = height
     const ctx = canvas.getContext("2d")!
 
-    // Background
     ctx.fillStyle = "#f7f7f5"
     ctx.fillRect(0, 0, width, height)
 
     if (withImage && uploadedImage) {
-      // Load the uploaded image
       const img = new Image()
       img.crossOrigin = "anonymous"
 
       return new Promise((resolve) => {
         img.onload = () => {
-          // Calculate image dimensions and position
-          const maxImageWidth = width * 0.4 // 40% of canvas width
-          const maxImageHeight = height * 0.6 // 60% of canvas height
+          const maxImageWidth = width * 0.4
+          const maxImageHeight = height * 0.6
 
           let imageWidth = img.width
           let imageHeight = img.height
 
-          // Scale image to fit within max dimensions while maintaining aspect ratio
           const imageAspectRatio = imageWidth / imageHeight
           if (imageWidth > maxImageWidth) {
             imageWidth = maxImageWidth
@@ -60,24 +64,17 @@ export default function NotionTitleGenerator() {
             imageWidth = imageHeight * imageAspectRatio
           }
 
-          // Position image on the left side, vertically centered
+          const imageTextSpacing = 80
           const imageX = 80
-          const imageY = (height - imageHeight) / 2
-
-          // Draw the image
-          ctx.drawImage(img, imageX, imageY, imageWidth, imageHeight)
-
-          // Calculate text area (right side of the image)
-          const textStartX = imageX + imageWidth + 60
+          const textStartX = imageX + imageWidth + imageTextSpacing
           const textWidth = width - textStartX - 80
           const textCenterX = textStartX + textWidth / 2
 
-          // Text styling - smaller to accommodate image
           ctx.fillStyle = "#2e2f31"
           ctx.textAlign = "center"
           ctx.textBaseline = "middle"
 
-          let fontSize = 180 // Smaller font size for image mode
+          let fontSize = 180
           const maxTextWidth = textWidth
 
           const splitTextIntoLines = (text: string, fontSize: number): string[] => {
@@ -119,24 +116,29 @@ export default function NotionTitleGenerator() {
             lines = splitTextIntoLines(title, fontSize)
           }
 
-          // Make sure image is slightly taller than text
-          const textHeight = lines.length * fontSize
+          const textHeight = lines.length * fontSize * 1.2
+          let finalImageHeight = imageHeight
+          let finalImageWidth = imageWidth
           if (imageHeight < textHeight * 1.1) {
-            const newImageHeight = textHeight * 1.1
-            const newImageWidth = newImageHeight * imageAspectRatio
-            const newImageY = (height - newImageHeight) / 2
-
-            // Clear and redraw image with new size
-            ctx.clearRect(imageX, imageY, imageWidth, imageHeight)
-            ctx.drawImage(img, imageX, newImageY, newImageWidth, newImageHeight)
+            finalImageHeight = textHeight * 1.1
+            finalImageWidth = finalImageHeight * imageAspectRatio
           }
 
-          // Draw text vertically centered
-          const textStartY = (height - (lines.length - 1) * fontSize) / 2
+          const combinedHeight = Math.max(finalImageHeight, textHeight)
+          const verticalCenter = height / 2
+
+          const imageY = verticalCenter - finalImageHeight / 2
+
+          ctx.drawImage(img, imageX, imageY, finalImageWidth, finalImageHeight)
+
+          const textCenterY = verticalCenter
 
           ctx.font = `bold ${fontSize}px Inter, -apple-system, BlinkMacSystemFont, sans-serif`
+          const totalTextHeight = (lines.length - 1) * fontSize * 1.2
+          const firstLineY = textCenterY - totalTextHeight / 2
+
           lines.forEach((line, index) => {
-            const y = textStartY + index * fontSize
+            const y = firstLineY + index * fontSize * 1.2
             ctx.fillText(line, textCenterX, y)
           })
 
@@ -145,7 +147,6 @@ export default function NotionTitleGenerator() {
         img.src = uploadedImage
       })
     } else {
-      // Original text-only mode
       ctx.fillStyle = "#2e2f31"
       ctx.textAlign = "center"
       ctx.textBaseline = "bottom"
