@@ -102,15 +102,15 @@ export default function MinimalNotionTitleGenerator() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-2">
-      <div className="bg-white rounded-lg p-4 max-w-xs w-full">
+    <div className="min-h-screen bg-white dark:bg-[var(--dark-bg)] flex items-center justify-center p-2">
+      <div className="bg-white dark:bg-[var(--dark-bg)] rounded-lg p-4 max-w-xs w-full">
         <div className="mb-4">
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Text"
-            className="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] focus:border-[#2e2f31] text-[#2e2f31] placeholder-gray-500"
+            className="w-full p-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2e2f31] dark:focus:ring-[var(--dark-button)] focus:border-[#2e2f31] dark:focus:border-[var(--dark-button)] text-[#2e2f31] dark:text-[var(--dark-text)] placeholder-gray-500 dark:placeholder-gray-400"
             onKeyPress={(e) => e.key === "Enter" && handleGenerate()}
           />
         </div>
@@ -118,14 +118,14 @@ export default function MinimalNotionTitleGenerator() {
         <button
           onClick={handleGenerate}
           disabled={isGenerating}
-          className="w-full bg-[#2e2f31] text-white py-3 rounded-lg hover:bg-black transition duration-200 mb-4 font-semibold text-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#2e2f31] dark:bg-[var(--dark-button)] text-white py-3 rounded-lg hover:bg-black dark:hover:bg-gray-600 transition duration-200 mb-4 font-semibold text-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isGenerating ? "..." : "Generieren"}
         </button>
 
         {generatedImage && (
           <div className="mt-6">
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-2">
+            <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-2">
               <img src={generatedImage || "/placeholder.svg"} alt="Generated Title" className="w-full rounded-md" />
             </div>
           </div>
