@@ -1,21 +1,20 @@
 # Stage 1: Build-Umgebung
-# Hier installieren wir Abhängigkeiten und bauen das Projekt
 FROM node:20-alpine AS builder
 
-# pnpm installieren
-RUN npm install -g pnpm
-
+# Arbeitsverzeichnis setzen
 WORKDIR /app
 
-# Abhängigkeiten kopieren und installieren
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+# Abhängigkeiten zuerst kopieren (für besseres Caching)
+COPY package.json ./
 
-# Den gesamten Quellcode kopieren
+# Dependencies installieren
+RUN npm install
+
+# Quellcode kopieren
 COPY . .
 
-# Die Produktionsversion der App bauen
-RUN pnpm build
+# Build ausführen
+RUN npm run build
 
 # ---
 

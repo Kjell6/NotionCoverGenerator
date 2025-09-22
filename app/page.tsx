@@ -129,7 +129,28 @@ export default function NotionTitleGenerator() {
 
           const imageY = verticalCenter - finalImageHeight / 2
 
+          // Zeichne das Bild und ersetze transparente Bereiche mit Hintergrundfarbe
           ctx.drawImage(img, imageX, imageY, finalImageWidth, finalImageHeight)
+
+          // Hole die Pixel-Daten des gezeichneten Bereichs
+          const imageData = ctx.getImageData(imageX, imageY, finalImageWidth, finalImageHeight)
+          const data = imageData.data
+
+          // Hintergrundfarbe als RGB-Werte
+          const bgColor = { r: 247, g: 247, b: 245 } // #f7f7f5
+
+          // Ersetze transparente Pixel (Alpha = 0) mit Hintergrundfarbe
+          for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] === 0) { // Vollständig transparent
+              data[i] = bgColor.r     // Rot
+              data[i + 1] = bgColor.g // Grün
+              data[i + 2] = bgColor.b // Blau
+              data[i + 3] = 255       // Vollständig opak
+            }
+          }
+
+          // Setze die modifizierten Pixel-Daten zurück
+          ctx.putImageData(imageData, imageX, imageY)
 
           const textCenterY = verticalCenter
 
