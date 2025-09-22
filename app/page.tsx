@@ -304,7 +304,7 @@ export default function NotionTitleGenerator() {
                   <img
                     src={uploadedImage || "/placeholder.svg"}
                     alt="Uploaded preview"
-                    className="w-full h-24 object-cover rounded-md"
+                    className="w-full max-h-48 object-contain rounded-md"
                   />
                 </div>
               )}
